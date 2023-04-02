@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-// import 'antd/dist/antd.css';
 import './assets/spinkit.css';
 import { fetchUsers } from './api/users';
-
 import UserList from './components/UserList';
 
 import './App.css';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -27,6 +27,18 @@ function App() {
       });
   }, []);
 
+  const handleUserUpdate = (updatedUser) => {
+  setUsers(users.map((user) => (user.id === updatedUser.id ? updatedUser : user)));
+  console.log(`User ${updatedUser.id} updated`, users);
+};
+
+  const handleDeleteUser = (deletedUser) => {
+    setUsers(users.filter(user => user.id !== deletedUser.id));
+  };
+
+
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -38,7 +50,7 @@ function App() {
             <Spin indicator={antIcon} />
           </div>
         ) : (
-          <UserList users={users} />
+          <UserList users={users} onDelete={handleDeleteUser} />
 
         )}
 

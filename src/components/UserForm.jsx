@@ -9,19 +9,38 @@ const UserForm = ({ onSubmit }) => {
   const [website, setWebsite] = useState('');
   const [companyName, setCompanyName] = useState('');
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    onSubmit({ name, email, phone, address, website, companyName });
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const updatedUser = {
+      ...user,
+      name,
+      email,
+      phone,
+      website,
+      address: {
+        ...user.address,
+        street,
+        suite,
+        city,
+        zipcode,
+      },
+      company: {
+        ...user.company,
+        name: companyName,
+      },
+    };
+    onSubmit(updatedUser);
     setName('');
     setEmail('');
     setPhone('');
-    setAddress('');
     setWebsite('');
+    setAddress('');
     setCompanyName('');
+    onCancel();
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleFormSubmit}>
       <Form.Item label="Name">
         <Input value={name} onChange={e => setName(e.target.value)} />
       </Form.Item>

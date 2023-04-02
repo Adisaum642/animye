@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Modal, message } from 'antd';
-import { MailTwoTone, PhoneTwoTone, SecurityScanTwoTone, HomeTwoTone, HeartTwoTone, EditTwoTone, DeleteTwoTone, IdcardTwoTone } from '@ant-design/icons';
+import { MailTwoTone, PhoneTwoTone, SecurityScanTwoTone, HomeTwoTone, HeartFilled, EditTwoTone, DeleteTwoTone, IdcardTwoTone } from '@ant-design/icons';
 import styles from './UserProfile.module.css';
 import UserForm from './UserForm';
 
@@ -9,6 +9,14 @@ const { Meta } = Card;
 const UserProfile = ({ user, onDelete }) => {
   const [showForm, setShowForm] = useState(false);
   const [heartClicked, setHeartClicked] = useState(false);
+
+
+
+  const handleUpdate = (updatedUser) => {
+    setUser(updatedUser);
+    setShowForm(false);
+  };
+
 
   const handleEditClick = () => {
     setShowForm(true);
@@ -23,13 +31,14 @@ const UserProfile = ({ user, onDelete }) => {
   };
 
   const handleDeleteClick = () => {
+
     Modal.confirm({
       title: 'Confirm',
-      content: 'Are you sure you want to delete this user profile?',
+      content: `Are you sure you want to delete ${user.name} profile?`,
       okText: 'Yes',
       cancelText: 'No',
       onOk: () => {
-        message.success('User profile deleted successfully');
+        message.success(` ${user.name} profile deleted successfully`);
         onDelete(user);
       },
     });
@@ -66,7 +75,7 @@ const UserProfile = ({ user, onDelete }) => {
         {user.company.name}
       </p>
       <div className={styles.footer}>
-        <HeartTwoTone
+        <HeartFilled
           style={{ fontSize: 24, color: heartClicked ? 'red' : 'white' }}
           onClick={handleHeartClick}
         />
@@ -74,7 +83,7 @@ const UserProfile = ({ user, onDelete }) => {
         <DeleteTwoTone style={{ fontSize: 24 }} onClick={handleDeleteClick} />
       </div>
       <Modal visible={showForm} onCancel={handleFormCancel} footer={null} destroyOnClose={true}>
-        <UserForm user={user} onCancel={handleFormCancel} />
+        <UserForm user={user} onSubmit={handleUpdate} onCancel={handleFormCancel} />
       </Modal>
     </Card>
   );
