@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
-import './assets/spinkit.css';
+// import { LoadingOutlined } from '@ant-design/icons';
+import Loading from './loading/Loading'
 import { fetchUsers } from './api/users';
 import UserList from './components/UserList';
 
 import './App.css';
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
+// const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+ const antIcon = <Loading />
 
 
 function App() {

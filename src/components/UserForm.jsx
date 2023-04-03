@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
+import { Alert } from 'antd';
 
 const UserForm = ({ onSubmit }) => {
   const [name, setName] = useState('');
@@ -8,24 +9,28 @@ const UserForm = ({ onSubmit }) => {
   const [address, setAddress] = useState('');
   const [website, setWebsite] = useState('');
   const [companyName, setCompanyName] = useState('');
+  const [formErrors, setFormErrors] = useState({});
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    if (!name || !email || !phone || !address || !website || !companyName) {
+      const errors = {};
+      if (!name) errors.name = true;
+      if (!email) errors.email = true;
+      if (!phone) errors.phone = true;
+      if (!address) errors.address = true;
+      if (!website) errors.website = true;
+      if (!companyName) errors.companyName = true;
+      setFormErrors(errors);
+      return;
+    }
     const updatedUser = {
-      ...user,
       name,
       email,
       phone,
       website,
-      address: {
-        ...user.address,
-        street,
-        suite,
-        city,
-        zipcode,
-      },
+      address,
       company: {
-        ...user.company,
         name: companyName,
       },
     };
@@ -33,34 +38,41 @@ const UserForm = ({ onSubmit }) => {
     setName('');
     setEmail('');
     setPhone('');
-    setWebsite('');
     setAddress('');
+    setWebsite('');
     setCompanyName('');
-    onCancel();
+    setFormErrors({});
   };
 
   return (
     <Form onSubmit={handleFormSubmit}>
-      <Form.Item label="Name">
-        <Input value={name} onChange={e => setName(e.target.value)} />
+      <Form.Item label="Name" required>
+        <Input value={name} onChange={e => setName(e.target.value)} className={formErrors.name ? 'error' : ''} />
+        {formErrors.name && <Alert message="Name is required" type="error" showIcon />}
       </Form.Item>
-      <Form.Item label="Email">
-        <Input value={email} onChange={e => setEmail(e.target.value)} />
+      <Form.Item label="Email" required>
+        <Input value={email} onChange={e => setEmail(e.target.value)} className={formErrors.email ? 'error' : ''} />
+        {formErrors.email && <Alert message="Email is required" type="error" showIcon />}
       </Form.Item>
-      <Form.Item label="Phone">
-        <Input value={phone} onChange={e => setPhone(e.target.value)} />
+      <Form.Item label="Phone" required>
+        <Input value={phone} onChange={e => setPhone(e.target.value)} className={formErrors.phone ? 'error' : ''} />
+        {formErrors.phone && <Alert message="Phone is required" type="error" showIcon />}
       </Form.Item>
-      <Form.Item label="Address">
-        <Input value={address} onChange={e => setAddress(e.target.value)} />
+      <Form.Item label="Address" required>
+        <Input value={address} onChange={e => setAddress(e.target.value)} className={formErrors.address ? 'error' : ''} />
+        {formErrors.address && <Alert message="Address is required" type="error" showIcon />}
       </Form.Item>
-      <Form.Item label="Website">
-        <Input value={website} onChange={e => setWebsite(e.target.value)} />
+      <Form.Item label="Website" required>
+        <Input value={website} onChange={e => setWebsite(e.target.value)} className={formErrors.website ? 'error' : ''} />
+        {formErrors.website && <Alert message="Website is required" type="error" showIcon />}
       </Form.Item>
-      <Form.Item label="Company Name">
-        <Input value={companyName} onChange={e => setCompanyName(e.target.value)} />
+      <Form.Item label="Company Name" required>
+        <Input value={companyName} onChange={e => setCompanyName(e.target.value)} className={formErrors.companyName ? 'error' : ''} />
+        {formErrors.companyName && <Alert message="Company Name is required" type="error" showIcon />}
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <
+          Button type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>
